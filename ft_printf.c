@@ -30,27 +30,28 @@ int ft_putnbr(unsigned int d, int base) {
 int ft_printf(char *string, ...) {
 	int count = 0;
 	va_list args;
+	int i = 0;
 	int n;
 
 	va_start(args, string);
-	while (*string) {
-		if (*string == '%') {
-			string++;
-			if (*string == 's')
+	while (string[i]) {
+		if (string[i] == '%') {
+			i++;
+			if (string[i] == 's')
 				count += ft_putstr(va_arg(args, char*));
-			if (*string == 'd') {
+			if (string[i] == 'd') {
 				if ((n = va_arg(args, int)) < 0) {
 					count += write(1, "-", 1);
 					n *= -1;
 				}
 				count += ft_putnbr(n, DECIMAL);
 			}
-			if (*string == 'x')
+			if (string[i] == 'x')
 				count += ft_putnbr(va_arg(args, unsigned int), HEXADECIMAL);
 		}
 		else
-			count += write(1, string, 1);
-		string++;
+			count += write(1, &string[i], 1);
+		i++;
 	}
 	va_end(args);
 	return count;
